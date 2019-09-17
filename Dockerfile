@@ -1,4 +1,4 @@
-FROM python:3.6.8
+FROM python:3.7
 
 COPY requirements.txt /requirements.txt
 
@@ -8,6 +8,6 @@ COPY . /app
 
 WORKDIR /app
 
-RUN chmod +x ./dev.sh
+RUN chmod +x dev.sh
 
 CMD ["./dev.sh"]
