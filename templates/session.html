@@ -1,0 +1,53 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Flask chat room</title>
+  </head>
+  <body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        const socket = io.connect('http://' + document.domain + ':' + 8080);
+        const username = localStorage.getItem("username")
+
+        socket.on('connect', function() {
+            console.log(username + " connected")
+        });
+
+        socket.on('message', function(data) {
+            let row = "<tr><td>" + data["username"] + " : "+ data["message"] + "</td><td>" + data["time"] + "<td></tr>"
+            $("table tbody").append(row);
+        });
+
+        $("#sendButton").on('click', function() {
+            if($.trim($("#myMessage").val()).length){
+              socket.send({"message": $("#myMessage").val(), "username": username});
+              $("#myMessage").val('');
+            }
+        });
+
+    });
+
+    </script>
+
+    <form>
+        <table>
+            <tbody>
+                {% for msg in messages %}
+                  <tr>
+                      <td>{{ msg.user_name }} : {{ msg.message_text }}</td>
+                      <td>{{ msg.message_time.strftime("%H:%M:%S") }}<td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+        <input type="text" placeholder="Enter message" id="myMessage" required>
+        <button type="submit" id="sendButton">Send</button> 
+    </form>
+  </body>
+  </html>

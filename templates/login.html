@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flask chat room</title>
+</head>
+<body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#join").on('click', function() {
+            console.log($("#username").val())
+            localStorage.setItem("username", $("#username").val());
+        });
+    });
+  </script>
+
+  <form action="{{ url_for('chatroom') }}" class="form" method='POST'>
+      <h2>Hello in my chat room. Enter your name to join</h2>
+      <input type="text" placeholder="Enter user name" name="username" id="username" required>
+      <button type="submit" id="join">Join</button>
+  </form>
+
+</body>
+</html>
